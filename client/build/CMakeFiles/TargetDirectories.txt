@@ -1,0 +1,3 @@
+/Users/evgeniy/Document/Programming/C++/P2P.2.0/client/build/CMakeFiles/client.dir
+/Users/evgeniy/Document/Programming/C++/P2P.2.0/client/build/CMakeFiles/edit_cache.dir
+/Users/evgeniy/Document/Programming/C++/P2P.2.0/client/build/CMakeFiles/rebuild_cache.dir
