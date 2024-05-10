@@ -18,12 +18,12 @@ bool MessageUnpack::is_write() const {
 }
 
 std::vector<uint32_t> MessageUnpack::get_missing_fragment() const {
-	std::vector<uint32_t> missing;
-	for (auto [id, size] : _frags) {
-		if (size == 0)
-			missing.push_back(id);
-	}
-	return missing;
+    std::vector<uint32_t> missing;
+    for (size_t i = 0; i < _frags.size(); i++) {
+        if (_frags[i].size == 0)
+            missing.push_back(i + 1);
+    }
+    return missing;
 }
 //								Setters
 void MessageUnpack::clear() {
@@ -32,20 +32,35 @@ void MessageUnpack::clear() {
 	_type = MessageType::MAX_MESSAGE_TYPES;
 }
 
-//TODO: неправильно вставляет фрагменты в класс!
+
 void MessageUnpack::add_fragment(const std::vector<char>& frag) {
 	MessageUnpack fragment(frag);
 	if (is_empty() || _type != fragment._type || _frags.size() != fragment._frags.size()) {
 		*this = fragment;
 		return;
 	}
-	_buf.insert(_buf.cend(), fragment._buf.begin(), fragment._buf.end());
 
-
+	uint32_t id_insert = 0;
 	for (auto [id, size] : fragment._frags) {
-		if (size != 0)
+		if (size != 0){
+			id_insert = id;
 			_frags[id - 1] = { id, size };
+			break;
+		}
 	}
+	uint32_t id_insert_left_count = 0;
+
+	for (int i = id_insert - 2; i >= 0; i--){
+		if (_frags[i].size != 0){
+			id_insert_left_count++;
+		}
+	}
+
+	uint32_t offset = id_insert_left_count * MAXLEN;
+	auto it = _buf.begin();
+	std::advance(it, offset);
+
+	_buf.insert(it, fragment._buf.begin(), fragment._buf.end());
 }
 
 void MessageUnpack::set_message(const std::vector<char>& pack) {

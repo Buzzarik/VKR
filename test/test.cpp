@@ -162,7 +162,7 @@ TEST(Test_Message, find_missing_fragments){
         pack.set_current_fragment(i);
         unpack.add_fragment(pack.get_pack_fragment());
     }
-    std::vector<uint32_t> missing{1, 3, 5, 7, 9};
+    std::vector<uint32_t> missing{2, 4, 6, 8, 10};
     EXPECT_EQ(missing, unpack.get_missing_fragment());
     EXPECT_EQ(false, unpack.is_write());
 
