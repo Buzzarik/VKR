@@ -32,6 +32,7 @@ void MessageUnpack::clear() {
 	_type = MessageType::MAX_MESSAGE_TYPES;
 }
 
+//TODO: неправильно вставляет фрагменты в класс!
 void MessageUnpack::add_fragment(const std::vector<char>& frag) {
 	MessageUnpack fragment(frag);
 	if (is_empty() || _type != fragment._type || _frags.size() != fragment._frags.size()) {
